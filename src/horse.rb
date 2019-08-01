@@ -1,5 +1,8 @@
 require 'slack-ruby-client'
 
+require_relative 'config'
+require_relative 'my_slack_client'
+
 #
 # This is Horse
 #
@@ -10,19 +13,15 @@ class Horse
     end
   end
 
-  def initialize
-    Slack.configure { |c| c.token = ENV['SLACK_API_TOKEN'] }
-  end
-
   def neigh
-    client.chat_postMessage(channel: '#qiita', text: message)
+    MySlackClient.instance.chat_postMessage(
+      channel: '#memo',
+      text: "#{message}",
+      reply_broadcast: true
+    )
   end
 
   private
-
-  def client
-    @client ||= Slack::Web::Client.new
-  end
 
   def message
     'ヒヒーン:horse:'
